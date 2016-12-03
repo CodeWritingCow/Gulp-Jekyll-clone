@@ -14,6 +14,8 @@
   "author": "Gary Pang",
   "license": "ISC",
   "devDependencies": {
-    "gulp": "^3.9.1"
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.1",
+    "gulp-rimraf": "^0.2.1"
   }
 }
