@@ -1,0 +1,19 @@
+{
+  "name": "gulp-jekyll-clone",
+  "version": "1.0.0",
+  "description": "A Jekyll clone made with Gulp.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "Gulp",
+    "Jekyll",
+    "JavaScript"
+  ],
+  "author": "Gary Pang",
+  "license": "ISC",
+  "devDependencies": {
+    "gulp": "^3.9.1"
+  }
+}
