@@ -1,7 +1,9 @@
 var gulp = require('gulp'),
 	concat = require('gulp-concat'),
 	clean = require('gulp-rimraf'),
-	cssmin = require('gulp-minify-css');
+	cssmin = require('gulp-minify-css'),
+	jsValidate = require('gulp-jsvalidate'),
+	notify = require('gulp-notify');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -15,4 +17,13 @@ gulp.task('default', ['clean'], function() {
 		.pipe(concat('main.css'))
 		.pipe(cssmin())
 		.pipe(gulp.dest("build/styles"));
+});
+
+gulp.task('javascript', function() {
+	console.log('Validate JavaScript');
+	return gulp.src('contents/javascript/**.js')
+			   .pipe(jsValidate())
+			   .on('error', notify.onError(function(error) {
+			   	return error.message;
+			   }));
 });
