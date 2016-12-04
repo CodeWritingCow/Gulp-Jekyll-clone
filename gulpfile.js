@@ -1,6 +1,7 @@
 var gulp = require('gulp'),
 	concat = require('gulp-concat'),
-	clean = require('gulp-rimraf');
+	clean = require('gulp-rimraf'),
+	cssmin = require('gulp-minify-css');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -9,8 +10,9 @@ gulp.task('clean', [], function() {
 });
 
 gulp.task('default', ['clean'], function() {
-	console.log("Concatenating and moving all files in styles folder!");
+	console.log("Concatenate, move and minify all CSS files in styles folder");
 	return gulp.src("contents/styles/**.css")
 		.pipe(concat('main.css'))
+		.pipe(cssmin())
 		.pipe(gulp.dest("build/styles"));
 });
