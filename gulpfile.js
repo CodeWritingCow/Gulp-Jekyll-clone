@@ -5,7 +5,8 @@ var gulp = require('gulp'),
 	jsValidate = require('gulp-jsvalidate'),
 	notify = require('gulp-notify'),
 	uglify = require('gulp-uglify'),
-	jasmine = require('gulp-jasmine');
+	jasmine = require('gulp-jasmine'),
+	webserver = require('gulp-webserver');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -51,4 +52,9 @@ gulp.task('default', ['css', 'homepage', 'javascript']);
 
 gulp.task('watch', [], function() {
 	return gulp.watch(['contents/**'], ['default']);
+});
+
+gulp.task('webserver', function() {
+	return gulp.src('build')
+			   .pipe(webserver({ livereload: true }));
 });
