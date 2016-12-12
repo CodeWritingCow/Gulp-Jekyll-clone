@@ -41,3 +41,8 @@ gulp.task('specs', function() {
 gulp.task('spec-watch', function() {
 	gulp.watch(['specs/**.js', 'contents/javascript/**.js'], ['specs']);
 });
+
+gulp.task('homepage', function() {
+	return gulp.src('contents/index.html')
+			   .pipe(gulp.dest('build'));
+});
