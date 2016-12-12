@@ -6,7 +6,8 @@ var gulp = require('gulp'),
 	notify = require('gulp-notify'),
 	uglify = require('gulp-uglify'),
 	jasmine = require('gulp-jasmine'),
-	webserver = require('gulp-webserver');
+	webserver = require('gulp-webserver'),
+	markdown = require('gulp-markdown');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -57,4 +58,10 @@ gulp.task('watch', [], function() {
 gulp.task('webserver', function() {
 	return gulp.src('build')
 			   .pipe(webserver({ livereload: true }));
+});
+
+gulp.task('generate_pages', function() {
+	return gulp.src('contents/pages/**.md')
+			   .pipe(markdown())
+			   .pipe(gulp.dest('build/pages'));
 });
