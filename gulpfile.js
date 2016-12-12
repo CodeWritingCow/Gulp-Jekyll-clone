@@ -13,10 +13,10 @@ gulp.task('clean', [], function() {
 	return gulp.src("build/*", { read: false }).pipe(clean());
 });
 
-gulp.task('default', ['clean'], function() {
+gulp.task('css', ['clean'], function() {
 	console.log("Concatenate, move and minify all CSS files in styles folder");
 	return gulp.src("contents/styles/**.css")
-		.pipe(concat('main.css'))
+		.pipe(concat('main.min.css'))
 		.pipe(cssmin())
 		.pipe(gulp.dest("build/styles"));
 });
@@ -45,4 +45,10 @@ gulp.task('spec-watch', function() {
 gulp.task('homepage', function() {
 	return gulp.src('contents/index.html')
 			   .pipe(gulp.dest('build'));
+});
+
+gulp.task('default', ['css', 'homepage', 'javascript']);
+
+gulp.task('watch', [], function() {
+	return gulp.watch(['contents/**'], ['default']);
 });
