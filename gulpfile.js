@@ -3,7 +3,8 @@ var gulp = require('gulp'),
 	clean = require('gulp-rimraf'),
 	cssmin = require('gulp-minify-css'),
 	jsValidate = require('gulp-jsvalidate'),
-	notify = require('gulp-notify');
+	notify = require('gulp-notify'),
+	uglify = require('gulp-uglify');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -20,10 +21,13 @@ gulp.task('default', ['clean'], function() {
 });
 
 gulp.task('javascript', function() {
-	console.log('Validate JavaScript');
+	console.log('Validate, Concat, Uglify and Move all JavaScript files');
 	return gulp.src('contents/javascript/**.js')
 			   .pipe(jsValidate())
 			   .on('error', notify.onError(function(error) {
 			   	return error.message;
-			   }));
+			   }))
+			   .pipe(uglify())
+			   .pipe(concat('main.js'))
+			   .pipe(gulp.dest('build/javascript'));
 });
