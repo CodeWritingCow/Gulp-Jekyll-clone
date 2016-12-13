@@ -7,7 +7,10 @@ var gulp = require('gulp'),
 	uglify = require('gulp-uglify'),
 	jasmine = require('gulp-jasmine'),
 	webserver = require('gulp-webserver'),
-	markdown = require('gulp-markdown');
+	markdown = require('gulp-markdown'),
+	tap = require('gulp-tap'),
+	Handlebars = require('Handlebars'),
+	rename = require('gulp-rename');
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -44,9 +47,17 @@ gulp.task('spec-watch', function() {
 	gulp.watch(['specs/**.js', 'contents/javascript/**.js'], ['specs']);
 });
 
-gulp.task('homepage', function() {
-	return gulp.src('contents/index.html')
-			   .pipe(gulp.dest('build'));
+gulp.task('homepage', ['clean'], function() {
+	return gulp.src('contents/index.hbs')
+			   .pipe(tap(function(file, t) {
+			   	var template = Handlebars.compile(file.contents.toString());
+			   	var html = template({ title: "Gulp + Handlebars is easy"});
+			   	file.contents = new Buffer(html, "utf-8");
+			   }))
+			   .pipe(rename(function(path) {
+			   	path.extname = ".html";
+			   }))
+			   .pipe(gulp.dest('build/pages'));
 });
 
 gulp.task('default', ['css', 'homepage', 'javascript']);
