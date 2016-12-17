@@ -10,7 +10,15 @@ var gulp = require('gulp'),
 	markdown = require('gulp-markdown'),
 	tap = require('gulp-tap'),
 	Handlebars = require('Handlebars'),
-	rename = require('gulp-rename');
+	rename = require('gulp-rename'),
+	path = require('path');
+
+var	_ = require('underscore');
+
+var Data = {
+	pages: []
+};
+
 
 gulp.task('clean', [], function() {
 	console.log("Clean all files in build folder");
@@ -76,15 +84,30 @@ gulp.task('generate_pages', function() {
 			   .pipe(tap(function(file) {
 			   	var template = Handlebars.compile(file.contents.toString());
 
-				return gulp.src('contents/pages/**.md')
+			   	return gulp.src('contents/pages/**.md')
+						   .pipe(tap(function(file) {
+
+						   	var name = path.basename(file.path, ".md");
+						   	var contents = file.contents.toString();
+						   	var index = contents.indexOf("---");
+
+						   	if (index !== -1) {
+						   		var data = JSON.parse(contents.slice(0, index));
+						   		data.name = name;
+						   		data.url = "/pages/" + file.relative.replace(".md", ".html");
+						   		Data.pages.push(data);
+						   		contents = contents.slice(index+3, contents.length);
+						   		file.contents = new Buffer(contents, "utf-8");
+						   	}
+						   }))
 						   .pipe(markdown())
 						   .pipe(tap(function(file) {
-						   	var data = {
-						   		contents: file.contents.toString()
-						   	};
+						   	var name = path.basename(file.path, ".html");
+						   	var data = _.findWhere(Data.pages, { name: name });
+						   	data.contents = file.contents.toString();
 						   	var html = template(data);
 						   	file.contents = new Buffer(html, "utf-8");
 						   }))
 						   .pipe(gulp.dest('build/pages'));
-			   }));
+						}));
 });
