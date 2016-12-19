@@ -5,5 +5,15 @@
 </head>
 <body>
 	<h1>{{ title }}</h1>
+
+	<ul>
+		{{#each pages }}
+		<li>
+			<a href="{{ url }}">
+				{{ title }}
+			</a>
+		</li>
+		{{/each}}
+	</ul>
 </body>
 </html>

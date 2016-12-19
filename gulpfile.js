@@ -55,17 +55,20 @@ gulp.task('spec-watch', function() {
 	gulp.watch(['specs/**.js', 'contents/javascript/**.js'], ['specs']);
 });
 
-gulp.task('homepage', ['clean'], function() {
+gulp.task('homepage', ['clean', 'generate_pages'], function() {
 	return gulp.src('contents/index.hbs')
 			   .pipe(tap(function(file, t) {
 			   	var template = Handlebars.compile(file.contents.toString());
-			   	var html = template({ title: "Gulp + Handlebars is easy"});
+			   	var html = template({
+			   		title: "Gulp + Handlebars is easy",
+			   		pages: Data.pages
+			   	});
 			   	file.contents = new Buffer(html, "utf-8");
 			   }))
 			   .pipe(rename(function(path) {
 			   	path.extname = ".html";
 			   }))
-			   .pipe(gulp.dest('build/pages'));
+			   .pipe(gulp.dest('build'));
 });
 
 gulp.task('default', ['css', 'homepage', 'javascript']);
